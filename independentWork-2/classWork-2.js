@@ -32,36 +32,37 @@ export const getWageSum = (data) => {
 
 // TODO: Вывести пользователя с женским именем, знаем, что имя Ekaterina
 export const getWomenName = (data) => {
-  //  let nameIndex=data.findIndex(item=>item.name==='Ekaterina')
-  //  return data[nameIndex].name
-  // return data.find(e=>e.name.endWith('a')).name
+  return data.find(item=>item.name.endsWith('a')).name;
 };
 
 // TODO: Вывести самого молодого и самого старшего пользователя
 // Вывод: "Самого младшего пользователя зовут {...} и ему ${age}.
 // Самого старшего пользователя зовут {...} и ему ${age}."
-export const getMinMaxUserAge = (data) => {};
+export const getMinMaxUserAge = (data) => {
+  const workers=data.sort((a,b)=>a.age-b.age)
+  return `Самого младшего пользователя зовут ${workers[0].name} и ему ${workers[0].age}.
+   Самого старшего пользователя зовут ${workers[workers.length-1].name} и ему ${workers[workers.length-1].age}.`
+};
 
 // TODO: Вывести кол-во пользователей, играющих в баскетбол
 // Элемент выглядит как "basketball"
 // Вывод: "В баскетбол играют {число} пользователей"
 export const getBasketPlayers = (data) => {
-  // return data.map(e=>e.hobby.includes('basketball')).length
-  return data.filter((e) => e.hobby.includes("basketball")).length;
+  return data.filter(item=>item.hobby.includes('basketball')).length
 };
 
 //TODO: Вывести  пользователей, у которых в адресе есть число, к примеру
 // {street: "8 March"}
 // Вывод: "По адресу {...} живут пользователи {...}"
 export const getUsersAddress = (data) => {
-  //  // const users= data.filter(e=>isFinite(e.address.street.slice(0,1)))
-  //   const users= data.map((v)=>
-  //   isFinite(v.address.street.slice(0,1)))
-  //  return users//.foreach(e=>e.address.street+' '+e.name)
-  //1 отфильтровать массив объектов по свойству address.street
-  //2 отфильтрованный массив перебрать и вывести строку с адресом и именем
+  const result=data.filter(item=>isFinite(parseInt(item.address.street)))
+  return result.map(item=>`По адресу ${item.address.street} живут пользователи ${item.name}`)
 };
 
 //TODO: Вывести имена пользователей и количество их бонусов за все года, удвоить их
 // Вывод: "Пользователи {...} получат соответственно {...} бонусов
-export const getDoubleUserBonuses = (data) => {};
+export const getDoubleUserBonuses = (data) => {
+const users=data.map(item=>
+  [item.name, (Object.values(item.userBonuses).reduce((x,y)=>x+y,0)*2)])
+return `Пользователи ${users.map((item)=>item[0])} получат соответственно ${users.map((item)=>item[1])} бонусов`
+};
